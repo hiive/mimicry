@@ -2,6 +2,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
 import random
+from heapq import nlargest, nsmallest
 from scipy import stats
 from sklearn.metrics import mutual_info_score
 
@@ -62,18 +63,16 @@ class SampleSet(object):
         self.fitness_function = fitness_function
         self.maximize = maximize
 
-    def calculate_fitness(self):
-        sorted_samples = sorted(
-            self.samples,
-            key=self.fitness_function,
-            reverse=self.maximize,
-        )
-        return np.array(sorted_samples)
-
     def get_percentile(self, percentile):
-        fit_samples = self.calculate_fitness()
-        index = int(len(fit_samples) * percentile)
-        return fit_samples[:index]
+        fn = nlargest if self.maximize else nsmallest
+
+        return np.array(
+            fn(
+                int(len(self.samples) * (1 - percentile)),
+                self.samples,
+                key=self.fitness_function
+            )
+        )
 
 
 class Distribution(object):
