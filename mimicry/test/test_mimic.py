@@ -69,7 +69,7 @@ class TestDistribution(unittest.TestCase):
 
         self.assertEqual(
             expected_results,
-            distribution.complete_graph.edges(data=True),
+            [*distribution.complete_graph.edges(data=True)],
         )
 
         # pos = nx.spring_layout(sample_set.complete_graph)
@@ -100,7 +100,7 @@ class TestDistribution(unittest.TestCase):
 
         self.assertEqual(
             expected_results,
-            distribution.spanning_graph.edges(),
+            [*distribution.spanning_graph.edges()],
         )
 
         # pos = nx.spring_layout(sample_set.complete_graph)
