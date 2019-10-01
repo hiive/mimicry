@@ -8,15 +8,15 @@ import numpy as np
 
 class TestMimic(unittest.TestCase):
     def test_inital_samples(self):
-        random.seed(0)
+        np.random.seed(1)
 
         domain = [(0, 1)] * 10
         m = mimic.Mimic(domain, sum, samples=100)
         expected_results = [
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 0, 1, 1, 1, 1],
-            [1, 1, 0, 1, 1, 0, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 0, 1, 1, 0],
+            [1, 0, 0, 1, 1, 1, 1, 1, 1, 1],
             [1, 1, 1, 0, 1, 0, 1, 1, 1, 1],
+            [1, 0, 1, 1, 1, 1, 1, 1, 0, 1],
         ]
         top_samples = m.sample_set.get_percentile(.04)
         self.assertTrue(np.equal(top_samples, expected_results).all())
@@ -24,7 +24,7 @@ class TestMimic(unittest.TestCase):
     def test_mimic(self):
         domain = [(0, 1)] * 7
         m = mimic.Mimic(domain, sum, samples=100)
-        for i in xrange(25):
+        for i in range(25):
             # print np.average([sum(sample) for sample in m.fit()[:5]])
             m.fit()
         results = m.fit()

@@ -1,3 +1,3 @@
 __author__ = 'Jeff'
 import test
-from mimic import Mimic
+from .mimic import Mimic
