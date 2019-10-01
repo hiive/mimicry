@@ -15,13 +15,18 @@ class Mimic:
     :param fitness_function: callable that will take a single instance of your optimization parameters and return
     a scalar fitness score
     :param samples: Number of samples to generate from the distribution each iteration
+    :param initial_samples: Set of initial samples. samples parameter is ignored if this is set.
     :param percentile: Percentile of the distribution to keep after each iteration, default is 0.90
     """
 
-    def __init__(self, domain, fitness_function, samples, percentile=0.90):
+    def __init__(self, domain, fitness_function, samples=None, initial_samples=None, percentile=0.90):
         self.domain = domain
+        if initial_samples is not None:
+            samples = len(initial_samples)
+        else:
+            initial_samples = np.array(self._generate_initial_samples())
+
         self.samples = samples
-        initial_samples = np.array(self._generate_initial_samples())
         self.sample_set = SampleSet(initial_samples, fitness_function)
         self.fitness_function = fitness_function
         self.percentile = percentile
